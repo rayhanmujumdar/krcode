@@ -4,6 +4,7 @@ import { createNewsletter } from "@/actions/newsletter/create";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
+import { MailSender } from "@/lib/MailSender";
 
 export default function NewsLetter() {
   const { toast } = useToast();
@@ -12,7 +13,18 @@ export default function NewsLetter() {
     const name = data.get("name") as string;
     const email = data.get("email") as string;
     const res = await createNewsletter({ name, email });
-
+    // const info = await MailSender({
+    //   from: "rayhanmujumdar0177@gmail.com",
+    //   to: email,
+    //   subject: "Sending Email using Node.js",
+    //   text: "That was easy!",
+    //   html: `
+    //     <h1>Hi ${name}!</h1>
+    //     <p>Welcome to our newsletter!</p>
+    //     <p>You can verify your subscriptions gmail here: <a href="${process.env.NEXT_PUBLIC_APP_URL}/verify/${email}">https://krcode.com/verify</a></p>
+    //   `,
+    // });
+    // console.log({ info });
     if (res.type === "error") {
       toast({
         variant: "destructive",

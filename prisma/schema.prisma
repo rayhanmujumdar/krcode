@@ -13,6 +13,7 @@ model User {
   email        String         @unique
   password     String
   role         UserRole       @default(USER)
+  verified     Boolean        @default(false)
   image        String?
   bio          String?        @default("I love reading about technology and science.")
   comments     Comment[]
@@ -94,6 +95,7 @@ model NewsletterSubscription {
   id         Int      @id @default(autoincrement())
   name       String
   email      String   @unique
+  verified  Boolean   @default(false)
   subscribed Boolean  @default(true)
   createdAt  DateTime @default(now())
 }

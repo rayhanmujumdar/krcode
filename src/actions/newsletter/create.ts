@@ -3,6 +3,8 @@ import { revalidatePath } from "next/cache";
 import { db } from "./../../lib/db";
 
 import * as EmailValidator from "email-validator";
+import { createVerificationToken } from "@/lib/createVarificationToken";
+import { sendEmailVerification } from "@/lib/sendEmailVarification";
 
 export async function createNewsletter({
   name,
@@ -46,10 +48,17 @@ export async function createNewsletter({
     },
   });
 
+  // get token from jwt by email
+  const token = await createVerificationToken(email, "subscriberVerification");
+
+  // send verification email with token
+  const info = await sendEmailVerification({ name, email, token });
+
   revalidatePath("/admin/newsletter");
 
   return {
     type: "success",
     message: "Thank you for subscribing to our newsletter",
+    mailInfo: info,
   };
 }
